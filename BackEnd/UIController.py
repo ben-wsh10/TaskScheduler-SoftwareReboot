@@ -10,7 +10,7 @@ fileHandler.setFormatter(formatter)
 logger.addHandler(fileHandler)
 
 try:
-    test = 'SCHTASKS /CREATE /SC DAILY /TN task /TR "C:Users\\benwu\\Desktop\\FinalYearProject-master\\Main.exe" /ST 15:38'
+    test = 'SCHTASKS /CREATE /SC DAILY /TN {0} /TR {1} /ST 15:38'.format("task", "C:Users\\benwu\\Desktop\\FinalYearProject-master\\Main.exe")
     # maintenanceReboot = 'shutdown /r /t 5 /c "Scheduled Maintenance"'
     subprocess.call(['start', 'cmd', '/k', test], shell=True)
     logger.info("Successfully written scheduled task")

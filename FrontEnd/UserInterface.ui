@@ -246,6 +246,12 @@ QRadioButton::indicator {
                        <height>16777215</height>
                       </size>
                      </property>
+                     <property name="font">
+                      <font>
+                       <family>Times New Roman,Times,serif</family>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
                      <property name="styleSheet">
                       <string notr="true">QComboBox{
 	padding : 5px 0px 0px 5px;
@@ -493,8 +499,14 @@ QRadioButton::indicator {
                      <property name="text">
                       <string/>
                      </property>
+                     <property name="maxLength">
+                      <number>256</number>
+                     </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
+                     </property>
+                     <property name="placeholderText">
+                      <string>Maximum 256 characters</string>
                      </property>
                     </widget>
                     <widget class="QLabel" name="label_2">
@@ -989,18 +1001,24 @@ QRadioButton::indicator {
           </property>
           <property name="minimumSize">
            <size>
-            <width>100</width>
+            <width>760</width>
             <height>40</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Times New Roman,Times,serif</family>
-            <pointsize>12</pointsize>
+            <pointsize>10</pointsize>
            </font>
           </property>
           <property name="text">
            <string>SCHTASKS /CREATE</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
           </property>
          </widget>
         </item>

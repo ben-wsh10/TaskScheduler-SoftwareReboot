@@ -3,7 +3,6 @@ import sys
 
 from PyQt5.QtCore import QTime
 from PyQt5.QtWidgets import QApplication, QMainWindow
-from PyQt5.uic.properties import QtCore, QtWidgets
 
 from FrontEnd.UserInterface import Ui_MainWindow
 import UIController as UIC
@@ -90,6 +89,7 @@ class Main(QMainWindow, Ui_MainWindow):
                 UIC.taskPeriod = "WEEKLY"
                 UIC.taskPeriod = UIC.taskPeriod + " /D " + self.dropDownPeriod.currentText()[:3]
                 print(UIC.taskPeriod)
+                UIC.logger.info("Day is selected.")
             else:
                 pass
         elif self.radioMonthly.isChecked():
@@ -97,10 +97,16 @@ class Main(QMainWindow, Ui_MainWindow):
                 UIC.taskPeriod = "MONTHLY"
                 UIC.taskPeriod = UIC.taskPeriod + " /D " + str(re.search(r'\d+', self.dropDownPeriod.currentText()).group())
                 print(UIC.taskPeriod)
+                UIC.logger.info("Date is selected.")
 
+    # Get time value
     def periodTimeChanged(self):
         UIC.taskTime = str(self.timePeriod.time().hour()) + ":" + str(self.timePeriod.time().minute())
         print(UIC.taskTime)
+        UIC.logger.info("Time is selected/changed.")
+
+
+
 
 
 if __name__ == '__main__':

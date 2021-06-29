@@ -6,7 +6,7 @@ import FrontEnd.UserInterface as UI
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-taskType, taskPeriod, taskName, taskPath, taskTime = "", "", "", "", ""
+taskType, taskPeriod, taskName, taskPath, taskTime = "", "", "", "\"D:\Coding\Python\TS&SR\Shutdown Script\shutdownScript.exe\"", ""
 cmdline = ""
 dailyList = ["-"]
 weekList = ["Select a Day", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]

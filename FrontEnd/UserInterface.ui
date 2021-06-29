@@ -500,13 +500,13 @@ QRadioButton::indicator {
                       <string/>
                      </property>
                      <property name="maxLength">
-                      <number>256</number>
+                      <number>25</number>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
                      </property>
                      <property name="placeholderText">
-                      <string>Maximum 256 characters</string>
+                      <string>Maximum 25 characters</string>
                      </property>
                     </widget>
                     <widget class="QLabel" name="label_2">

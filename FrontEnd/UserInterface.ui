@@ -350,19 +350,35 @@ QRadioButton::indicator {
                      </property>
                      <property name="dateTime">
                       <datetime>
-                       <hour>0</hour>
+                       <hour>16</hour>
                        <minute>0</minute>
                        <second>0</second>
-                       <year>2000</year>
-                       <month>1</month>
-                       <day>1</day>
+                       <year>1999</year>
+                       <month>12</month>
+                       <day>31</day>
+                      </datetime>
+                     </property>
+                     <property name="maximumDateTime">
+                      <datetime>
+                       <hour>23</hour>
+                       <minute>59</minute>
+                       <second>59</second>
+                       <year>1999</year>
+                       <month>12</month>
+                       <day>31</day>
                       </datetime>
                      </property>
                      <property name="currentSection">
                       <enum>QDateTimeEdit::HourSection</enum>
                      </property>
+                     <property name="displayFormat">
+                      <string notr="true">HH:mm</string>
+                     </property>
                      <property name="calendarPopup">
                       <bool>false</bool>
+                     </property>
+                     <property name="timeSpec">
+                      <enum>Qt::OffsetFromUTC</enum>
                      </property>
                     </widget>
                    </widget>
@@ -455,11 +471,25 @@ QRadioButton::indicator {
                        <height>20</height>
                       </size>
                      </property>
+                     <property name="font">
+                      <font>
+                       <family>Times New Roman,Times,serif</family>
+                       <pointsize>12</pointsize>
+                       <weight>50</weight>
+                       <bold>false</bold>
+                      </font>
+                     </property>
                      <property name="styleSheet">
                       <string notr="true">QComboBox{
 	padding : 5px 0px 0px 5px;
 
 }</string>
+                     </property>
+                     <property name="text">
+                      <string>fsdff</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
                      </property>
                     </widget>
                     <widget class="QLabel" name="label_2">

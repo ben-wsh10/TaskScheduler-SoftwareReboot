@@ -177,9 +177,12 @@ class Ui_MainWindow(object):
 "    padding : 8px 15px 8px 15px;\n"
 "\n"
 "}")
-        self.timePeriod.setDateTime(QtCore.QDateTime(QtCore.QDate(2000, 1, 1), QtCore.QTime(0, 0, 0)))
+        self.timePeriod.setDateTime(QtCore.QDateTime(QtCore.QDate(1999, 12, 31), QtCore.QTime(16, 0, 0)))
+        self.timePeriod.setMaximumDateTime(QtCore.QDateTime(QtCore.QDate(1999, 12, 31), QtCore.QTime(23, 59, 59)))
         self.timePeriod.setCurrentSection(QtWidgets.QDateTimeEdit.HourSection)
+        self.timePeriod.setDisplayFormat("HH:mm")
         self.timePeriod.setCalendarPopup(False)
+        self.timePeriod.setTimeSpec(QtCore.Qt.OffsetFromUTC)
         self.timePeriod.setObjectName("timePeriod")
         self.horizontalLayout_4.addWidget(self.groupBox_2)
         spacerItem3 = QtWidgets.QSpacerItem(150, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
@@ -213,10 +216,17 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.lineTaskName.sizePolicy().hasHeightForWidth())
         self.lineTaskName.setSizePolicy(sizePolicy)
         self.lineTaskName.setMinimumSize(QtCore.QSize(300, 20))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman,Times,serif")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setWeight(50)
+        self.lineTaskName.setFont(font)
         self.lineTaskName.setStyleSheet("QComboBox{\n"
 "    padding : 5px 0px 0px 5px;\n"
 "\n"
 "}")
+        self.lineTaskName.setAlignment(QtCore.Qt.AlignCenter)
         self.lineTaskName.setObjectName("lineTaskName")
         self.label_2 = QtWidgets.QLabel(self.groupBox_3)
         self.label_2.setGeometry(QtCore.QRect(30, 100, 111, 16))
@@ -435,6 +445,7 @@ class Ui_MainWindow(object):
         self.radioMonthly.setText(_translate("MainWindow", "Monthly"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Time (24 hour format)"))
         self.groupBox_3.setTitle(_translate("MainWindow", "Task Name"))
+        self.lineTaskName.setText(_translate("MainWindow", "fsdff"))
         self.label_2.setText(_translate("MainWindow", "*No spaces allowed"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Create"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("MainWindow", "Update"))

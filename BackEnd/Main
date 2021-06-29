@@ -1,7 +1,9 @@
 import re
 import sys
 
+from PyQt5.QtCore import QTime
 from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.uic.properties import QtCore, QtWidgets
 
 from FrontEnd.UserInterface import Ui_MainWindow
 import UIController as UIC
@@ -21,6 +23,7 @@ class Main(QMainWindow, Ui_MainWindow):
         self.initialiseTabs()
         self.initialiseButtons()
 
+
     # Initialise tabs
     def initialiseTabs(self):
         self.tabWidget.currentChanged.connect(self.tabChanged)
@@ -30,7 +33,10 @@ class Main(QMainWindow, Ui_MainWindow):
         self.radioDaily.clicked.connect(lambda: self.periodButtonChanged())
         self.radioWeekly.clicked.connect(lambda: self.periodButtonChanged())
         self.radioMonthly.clicked.connect(lambda: self.periodButtonChanged())
+        # Combo box
         self.dropDownPeriod.currentTextChanged.connect(lambda: self.periodValue())
+        # QTimeEdit
+        self.timePeriod.timeChanged.connect(lambda: self.periodTimeChanged())
 
     # Get task type
     def tabChanged(self):
@@ -74,6 +80,7 @@ class Main(QMainWindow, Ui_MainWindow):
         self.dropDownPeriod.clear()
         self.dropDownPeriod.addItems(UIC.monthList)
 
+    # Get task period's day/date
     def periodValue(self):
         if self.radioDaily.isChecked():
             print(UIC.taskPeriod)
@@ -90,6 +97,10 @@ class Main(QMainWindow, Ui_MainWindow):
                 UIC.taskPeriod = "MONTHLY"
                 UIC.taskPeriod = UIC.taskPeriod + " /D " + str(re.search(r'\d+', self.dropDownPeriod.currentText()).group())
                 print(UIC.taskPeriod)
+
+    def periodTimeChanged(self):
+        UIC.taskTime = str(self.timePeriod.time().hour()) + ":" + str(self.timePeriod.time().minute())
+        print(UIC.taskTime)
 
 
 if __name__ == '__main__':

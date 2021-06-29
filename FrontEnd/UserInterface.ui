@@ -486,7 +486,7 @@ QRadioButton::indicator {
 }</string>
                      </property>
                      <property name="text">
-                      <string>fsdff</string>
+                      <string/>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>

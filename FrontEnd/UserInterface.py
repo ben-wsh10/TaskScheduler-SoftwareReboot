@@ -226,6 +226,7 @@ class Ui_MainWindow(object):
 "    padding : 5px 0px 0px 5px;\n"
 "\n"
 "}")
+        self.lineTaskName.setText("")
         self.lineTaskName.setAlignment(QtCore.Qt.AlignCenter)
         self.lineTaskName.setObjectName("lineTaskName")
         self.label_2 = QtWidgets.QLabel(self.groupBox_3)
@@ -445,7 +446,6 @@ class Ui_MainWindow(object):
         self.radioMonthly.setText(_translate("MainWindow", "Monthly"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Time (24 hour format)"))
         self.groupBox_3.setTitle(_translate("MainWindow", "Task Name"))
-        self.lineTaskName.setText(_translate("MainWindow", "fsdff"))
         self.label_2.setText(_translate("MainWindow", "*No spaces allowed"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Create"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("MainWindow", "Update"))

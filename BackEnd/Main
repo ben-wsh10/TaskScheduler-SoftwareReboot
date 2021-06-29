@@ -1,3 +1,4 @@
+import datetime
 import re
 import sys
 
@@ -16,6 +17,7 @@ class Main(QMainWindow, Ui_MainWindow):
 
         UIC.startLogging()
         UIC.taskType = "CREATE"
+        self.updateLabelCmdLine()
         self.initialiseObject()
 
     # Initialise objects
@@ -138,10 +140,9 @@ class Main(QMainWindow, Ui_MainWindow):
             else:
                 UIC.taskPeriod = "MONTHLY"
         self.updateLabelCmdLine()
-
-    # Get time value
+    # Get time valuetim
     def periodTimeChanged(self):
-        UIC.taskTime = str(self.timePeriod.time().hour()) + ":" + str(self.timePeriod.time().minute())
+        UIC.taskTime = str("{:02}".format(self.timePeriod.time().hour())) + ":" + str("{:02}".format(self.timePeriod.time().minute()))
         self.updateLabelCmdLine()
         # print(UIC.taskTime)
         UIC.logger.info("Time is selected/changed.")

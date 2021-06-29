@@ -1,4 +1,3 @@
-import datetime
 import re
 import sys
 
@@ -17,7 +16,7 @@ class Main(QMainWindow, Ui_MainWindow):
 
         UIC.startLogging()
         UIC.taskType = "CREATE"
-        self.updateLabelCmdLine()
+        self.realTimeUpdates()
         self.initialiseObject()
 
     # Initialise objects
@@ -32,7 +31,7 @@ class Main(QMainWindow, Ui_MainWindow):
 
     def initialiseButtons(self):
         # Push Buttons
-        # self.createButton.setEnabled(False)
+        self.createButton.setEnabled(False)
         self.createButton.clicked.connect(lambda: self.createTask())
         # Radio buttons
         self.radioDaily.clicked.connect(lambda: self.periodButtonChanged())
@@ -41,7 +40,7 @@ class Main(QMainWindow, Ui_MainWindow):
         # Combo box
         self.dropDownPeriod.currentTextChanged.connect(lambda: self.periodValue())
         # QTimeEdit
-        self.timePeriod.setTime(QTime.currentTime())
+        self.timePeriod.setTime(QTime(0, 0))
         self.timePeriod.timeChanged.connect(lambda: self.periodTimeChanged())
 
     def initialiseField(self):
@@ -67,10 +66,15 @@ class Main(QMainWindow, Ui_MainWindow):
         self.lineTaskName.setText("")
         UIC.taskName = ""
         # reset task time
-        self.timePeriod.setTime(QTime.currentTime())
-        UIC.taskTime = ""
+        self.timePeriod.setTime(QTime(0, 0))
+        UIC.taskTime = str("{:02}".format(self.timePeriod.time().hour())) + ":" + str(
+            "{:02}".format(self.timePeriod.time().minute()))
         # reset labelcmdline
-        self.updateLabelCmdLine()
+        self.realTimeUpdates()
+        # Reset criteria
+        UIC.radioCriteria, UIC.timeCriteria, UIC.nameCriteria = False, False, False
+        # reset createButton
+        self.createButton.setEnabled(False)
 
     # Get task type
     def tabChanged(self):
@@ -84,7 +88,7 @@ class Main(QMainWindow, Ui_MainWindow):
             UIC.taskType = "DELETE"
             UIC.logger.info("DELETE Tab is selected.")
         self.resetDefault()
-        self.updateLabelCmdLine()
+        self.realTimeUpdates()
 
     # Get task period
     def periodButtonChanged(self):
@@ -100,7 +104,7 @@ class Main(QMainWindow, Ui_MainWindow):
             UIC.taskPeriod = "MONTHLY"
             self.monthlyComboBox()
             UIC.logger.info("Monthly Period is selected.")
-        self.updateLabelCmdLine()
+        self.realTimeUpdates()
 
     # Get daily drop down menu
     def dailyComboBox(self):
@@ -139,28 +143,62 @@ class Main(QMainWindow, Ui_MainWindow):
                 UIC.logger.info("Date is selected.")
             else:
                 UIC.taskPeriod = "MONTHLY"
-        self.updateLabelCmdLine()
-    # Get time valuetim
+        self.realTimeUpdates()
+
+    # Get time valuetime
     def periodTimeChanged(self):
-        UIC.taskTime = str("{:02}".format(self.timePeriod.time().hour())) + ":" + str("{:02}".format(self.timePeriod.time().minute()))
-        self.updateLabelCmdLine()
+        UIC.taskTime = str("{:02}".format(self.timePeriod.time().hour())) + ":" + str(
+            "{:02}".format(self.timePeriod.time().minute()))
+        self.realTimeUpdates()
         # print(UIC.taskTime)
         UIC.logger.info("Time is selected/changed.")
 
     # Get task name
     def taskNameChanged(self):
         UIC.taskName = self.lineTaskName.text()
-        self.updateLabelCmdLine()
+        self.realTimeUpdates()
         # print(UIC.taskName)
 
+    def realTimeUpdates(self):
+        self.updateLabelCmdLine()
+        self.createTaskCriteria()
+
+    # Update cmdLine label
     def updateLabelCmdLine(self):
         # print(UIC.updateCmdLine())
         self.labelCmdLine.setText(UIC.updateCmdLine())
 
-    def createTask(self):
-        self.createButton.setEnabled(True)
-        UIC.createTask()
+    def createTaskCriteria(self):
 
+        # Period Criteria
+        if self.radioWeekly.isChecked() or self.radioMonthly.isChecked():
+            if self.dropDownPeriod.currentIndex() != 0 and self.dropDownPeriod.currentIndex() != -1:
+                UIC.radioCriteria = True
+            else:
+                UIC.radioCriteria = False
+        elif self.radioDaily.isChecked():
+            UIC.radioCriteria = True
+        else:
+            UIC.radioCriteria = False
+        # Time Criteria
+        if UIC.taskTime != "":
+            UIC.timeCriteria = True
+        else:
+            UIC.timeCriteria = False
+        # Name Criteria
+        if UIC.taskName != "" and " " not in UIC.taskName:
+            UIC.nameCriteria = True
+        else:
+            UIC.nameCriteria = False
+        # Enable button
+        if UIC.radioCriteria is True and UIC.timeCriteria is True and UIC.nameCriteria is True:
+            print(UIC.cmdLine)
+            self.createButton.setEnabled(True)
+        else:
+            self.createButton.setEnabled(False)
+
+    def createTask(self):
+            UIC.createTask()
 
 
 if __name__ == '__main__':

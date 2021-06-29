@@ -1,7 +1,9 @@
 import sys
 
-from PyQt6.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow
+
 from FrontEnd.UserInterface import Ui_MainWindow
+import UIController as UIC
 
 
 class Main(QMainWindow, Ui_MainWindow):
@@ -10,9 +12,52 @@ class Main(QMainWindow, Ui_MainWindow):
         QMainWindow.__init__(self, parent=parent)
         self.setupUi(self)
 
+        UIC.startLogging()
+        self.initialiseObject()
+
+    # Initialise objects
+    def initialiseObject(self):
+        self.initialiseTabs()
+        self.initialiseButtons()
+
+    # Initialise tabs
+    def initialiseTabs(self):
+        self.tabWidget.currentChanged.connect(self.tabChanged)
+
+    def initialiseButtons(self):
+        self.radioDaily.clicked.connect(lambda: self.periodButtonChanged())
+        self.radioWeekly.clicked.connect(lambda: self.periodButtonChanged())
+        self.radioMonthly.clicked.connect(lambda: self.periodButtonChanged())
+
+
+    # Get task type
+    def tabChanged(self):
+        if self.tabWidget.currentIndex() == 0:
+            UIC.taskType = "CREATE"
+            UIC.logger.info("CREATE Tab is selected.")
+        elif self.tabWidget.currentIndex() == 1:
+            UIC.taskType = "CHANGE"
+            UIC.logger.info("UPDATE Tab is selected.")
+        elif self.tabWidget.currentIndex() == 2:
+            UIC.taskType = "DELETE"
+            UIC.logger.info("DELETE Tab is selected.")
+
+    # Get task period
+    def periodButtonChanged(self):
+        if self.radioDaily.isChecked():
+            UIC.taskPeriod = "DAILY"
+            UIC.logger.info("Daily Period is selected.")
+        elif self.radioWeekly.isChecked():
+            UIC.taskPeriod = "WEEKLY"
+            UIC.logger.info("Weekly Period is selected.")
+        elif self.radioMonthly.isChecked():
+            UIC.taskPeriod = "MONTHLY"
+            UIC.logger.info("Monthly Period is selected.")
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    app.setStyle("fusion")
     window = Main()
     window.show()
 

@@ -29,7 +29,6 @@ class Main(QMainWindow, Ui_MainWindow):
         self.radioWeekly.clicked.connect(lambda: self.periodButtonChanged())
         self.radioMonthly.clicked.connect(lambda: self.periodButtonChanged())
 
-
     # Get task type
     def tabChanged(self):
         if self.tabWidget.currentIndex() == 0:
@@ -46,14 +45,31 @@ class Main(QMainWindow, Ui_MainWindow):
     def periodButtonChanged(self):
         if self.radioDaily.isChecked():
             UIC.taskPeriod = "DAILY"
+            self.dailyComboBox()
             UIC.logger.info("Daily Period is selected.")
         elif self.radioWeekly.isChecked():
             UIC.taskPeriod = "WEEKLY"
+            self.weeklyComboBox()
             UIC.logger.info("Weekly Period is selected.")
         elif self.radioMonthly.isChecked():
             UIC.taskPeriod = "MONTHLY"
+            self.monthlyComboBox()
             UIC.logger.info("Monthly Period is selected.")
 
+    # Get daily drop down menu
+    def dailyComboBox(self):
+        self.dropDownPeriod.clear()
+        self.dropDownPeriod.addItems(UIC.dailyList)
+
+    # Get weekly drop down menu
+    def weeklyComboBox(self):
+        self.dropDownPeriod.clear()
+        self.dropDownPeriod.addItems(UIC.weekList)
+
+    # Get weekly drop down menu
+    def monthlyComboBox(self):
+        self.dropDownPeriod.clear()
+        self.dropDownPeriod.addItems(UIC.monthList)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

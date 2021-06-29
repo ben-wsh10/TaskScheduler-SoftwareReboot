@@ -1,3 +1,4 @@
+import re
 import sys
 
 from PyQt5.QtWidgets import QApplication, QMainWindow
@@ -25,9 +26,11 @@ class Main(QMainWindow, Ui_MainWindow):
         self.tabWidget.currentChanged.connect(self.tabChanged)
 
     def initialiseButtons(self):
+        # radio buttons
         self.radioDaily.clicked.connect(lambda: self.periodButtonChanged())
         self.radioWeekly.clicked.connect(lambda: self.periodButtonChanged())
         self.radioMonthly.clicked.connect(lambda: self.periodButtonChanged())
+        self.dropDownPeriod.currentTextChanged.connect(lambda: self.periodValue())
 
     # Get task type
     def tabChanged(self):
@@ -70,6 +73,24 @@ class Main(QMainWindow, Ui_MainWindow):
     def monthlyComboBox(self):
         self.dropDownPeriod.clear()
         self.dropDownPeriod.addItems(UIC.monthList)
+
+    def periodValue(self):
+        if self.radioDaily.isChecked():
+            print(UIC.taskPeriod)
+            pass
+        elif self.radioWeekly.isChecked():
+            if self.dropDownPeriod.currentIndex() != 0 and self.dropDownPeriod.currentIndex() != -1:
+                UIC.taskPeriod = "WEEKLY"
+                UIC.taskPeriod = UIC.taskPeriod + " /D " + self.dropDownPeriod.currentText()[:3]
+                print(UIC.taskPeriod)
+            else:
+                pass
+        elif self.radioMonthly.isChecked():
+            if self.dropDownPeriod.currentIndex() != 0 and self.dropDownPeriod.currentIndex() != -1:
+                UIC.taskPeriod = "MONTHLY"
+                UIC.taskPeriod = UIC.taskPeriod + " /D " + str(re.search(r'\d+', self.dropDownPeriod.currentText()).group())
+                print(UIC.taskPeriod)
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

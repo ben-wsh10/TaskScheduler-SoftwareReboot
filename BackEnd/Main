@@ -39,26 +39,50 @@ class Main(QMainWindow, Ui_MainWindow):
         # Combo box
         self.dropDownPeriod.currentTextChanged.connect(lambda: self.periodValue())
         # QTimeEdit
+        self.timePeriod.setTime(QTime.currentTime())
         self.timePeriod.timeChanged.connect(lambda: self.periodTimeChanged())
 
     def initialiseField(self):
         # QLineEdit
         self.lineTaskName.textChanged.connect(lambda: self.taskNameChanged())
 
+    def resetDefault(self):
+        # reset radio buttons
+        self.radioDaily.setAutoExclusive(False)
+        self.radioDaily.setChecked(False)
+        self.radioDaily.setAutoExclusive(True)
+        self.radioWeekly.setAutoExclusive(False)
+        self.radioWeekly.setChecked(False)
+        self.radioWeekly.setAutoExclusive(True)
+        self.radioMonthly.setAutoExclusive(False)
+        self.radioMonthly.setChecked(False)
+        self.radioMonthly.setAutoExclusive(True)
+        UIC.taskPeriod = ""
+        # reset dropdown menu
+        self.dropDownPeriod.clear()
+        self.dropDownPeriod.addItem("-")
+        # reset task name
+        self.lineTaskName.setText("")
+        UIC.taskName = ""
+        # reset task time
+        self.timePeriod.setTime(QTime.currentTime())
+        UIC.taskTime = ""
+        # reset labelcmdline
+        self.updateLabelCmdLine()
+
     # Get task type
     def tabChanged(self):
         if self.tabWidget.currentIndex() == 0:
             UIC.taskType = "CREATE"
-            self.updateLabelCmdLine()
             UIC.logger.info("CREATE Tab is selected.")
         elif self.tabWidget.currentIndex() == 1:
             UIC.taskType = "CHANGE"
-            self.updateLabelCmdLine()
             UIC.logger.info("UPDATE Tab is selected.")
         elif self.tabWidget.currentIndex() == 2:
             UIC.taskType = "DELETE"
-            self.updateLabelCmdLine()
             UIC.logger.info("DELETE Tab is selected.")
+        self.resetDefault()
+        self.updateLabelCmdLine()
 
     # Get task period
     def periodButtonChanged(self):

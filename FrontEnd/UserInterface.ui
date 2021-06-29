@@ -254,6 +254,11 @@ QRadioButton::indicator {
                      <property name="frame">
                       <bool>true</bool>
                      </property>
+                     <item>
+                      <property name="text">
+                       <string>-</string>
+                      </property>
+                     </item>
                     </widget>
                    </widget>
                   </item>

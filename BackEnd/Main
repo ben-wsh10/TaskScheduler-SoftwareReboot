@@ -65,18 +65,16 @@ class Main(QMainWindow, Ui_MainWindow):
         if self.radioDaily.isChecked():
             UIC.taskPeriod = "DAILY"
             self.dailyComboBox()
-            self.updateLabelCmdLine()
             UIC.logger.info("Daily Period is selected.")
         elif self.radioWeekly.isChecked():
             UIC.taskPeriod = "WEEKLY"
             self.weeklyComboBox()
-            self.updateLabelCmdLine()
             UIC.logger.info("Weekly Period is selected.")
         elif self.radioMonthly.isChecked():
             UIC.taskPeriod = "MONTHLY"
             self.monthlyComboBox()
-            self.updateLabelCmdLine()
             UIC.logger.info("Monthly Period is selected.")
+        self.updateLabelCmdLine()
 
     # Get daily drop down menu
     def dailyComboBox(self):
@@ -96,42 +94,42 @@ class Main(QMainWindow, Ui_MainWindow):
     # Get task period's day/date
     def periodValue(self):
         if self.radioDaily.isChecked():
-            self.updateLabelCmdLine()
-            print(UIC.taskPeriod)
+            # print(UIC.taskPeriod)
             pass
         elif self.radioWeekly.isChecked():
             if self.dropDownPeriod.currentIndex() != 0 and self.dropDownPeriod.currentIndex() != -1:
                 UIC.taskPeriod = "WEEKLY"
                 UIC.taskPeriod = UIC.taskPeriod + " /D " + self.dropDownPeriod.currentText()[:3]
-                self.updateLabelCmdLine()
-                print(UIC.taskPeriod)
+                # print(UIC.taskPeriod)
                 UIC.logger.info("Day is selected.")
             else:
-                pass
+                UIC.taskPeriod = "WEEKLY"
         elif self.radioMonthly.isChecked():
             if self.dropDownPeriod.currentIndex() != 0 and self.dropDownPeriod.currentIndex() != -1:
                 UIC.taskPeriod = "MONTHLY"
                 UIC.taskPeriod = UIC.taskPeriod + " /D " + str(
                     re.search(r'\d+', self.dropDownPeriod.currentText()).group())
-                self.updateLabelCmdLine()
-                print(UIC.taskPeriod)
+                # print(UIC.taskPeriod)
                 UIC.logger.info("Date is selected.")
+            else:
+                UIC.taskPeriod = "MONTHLY"
+        self.updateLabelCmdLine()
 
     # Get time value
     def periodTimeChanged(self):
         UIC.taskTime = str(self.timePeriod.time().hour()) + ":" + str(self.timePeriod.time().minute())
         self.updateLabelCmdLine()
-        print(UIC.taskTime)
+        # print(UIC.taskTime)
         UIC.logger.info("Time is selected/changed.")
 
     # Get task name
     def taskNameChanged(self):
         UIC.taskName = self.lineTaskName.text()
         self.updateLabelCmdLine()
-        print(UIC.taskName)
+        # print(UIC.taskName)
 
     def updateLabelCmdLine(self):
-        print(UIC.updateCmdLine())
+        # print(UIC.updateCmdLine())
         self.labelCmdLine.setText(UIC.updateCmdLine())
 
     def createTask(self):

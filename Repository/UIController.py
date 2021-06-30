@@ -1,3 +1,4 @@
+import csv
 import os
 import subprocess
 import logging
@@ -5,14 +6,29 @@ import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-
 taskType, taskPeriod, taskName, taskPath, taskTime = "", "", "", os.path.abspath(
     "shutdownScript.exe"), ""
 radioCriteria, timeCriteria, nameCriteria = False, False, False
-cmdLine = ""
+cmdLineC = ""
+cmdLineU = ""
+
+csvFileName = "data.csv"
+csvField = ["taskName", "taskPeriod", "taskTime"]
+
+periodList = ["-", "Minute", "Hourly", "Daily", "Weekly", "Monthly"]
+
+minuteList = ["Select a minute",
+              "1 minute", "2 minutes", "3 minute", "4 minute", "5 minute",
+              "10 minutes", "15 minutes", "20 minutes", "25 minutes", "30 minutes",
+              "35 minutes", "40 minutes", "45 minutes", "50 minutes", "55 minutes"
+              ]
+hourlyList = ["Select an hour",
+              "1 hour", "2 hour", "3 hour", "4 hour", "5 hour", "6 hour", "7 hour", "8 hour",
+              "9 hour", "10 hour", "11 hour", "12 hour", "13 hour", "14 hour", "15 hour", "16 hour",
+              "17 hour", "18 hour", "19 hour", "20 hour", "21 hour", "22 hour", "23 hour",
+              ]
 dailyList = ["-"]
 weekList = ["Select a Day", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]
-# weekListConversion = ["MON", "TUES", "WED", "THU", "FRI", "SAT", "SUN"]
 monthList = ["Select a date",
              "1st Day of the Month", "2nd Day of the Month", "3rd Day of the Month",
              "4th Day of the Month", "5th Day of the Month", "6th Day of the Month",
@@ -28,10 +44,6 @@ monthList = ["Select a date",
              ]
 
 
-# monthListConversion = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
-#                        27, 28, 29, 30, 31]
-
-
 def startLogging():
     formatter = logging.Formatter('%(levelname)s : %(asctime)s : %(message)s')
     fileHandler = logging.FileHandler('LogFile.log')
@@ -39,22 +51,50 @@ def startLogging():
     logger.addHandler(fileHandler)
 
 
-def updateCmdLine():
-    global cmdLine
+def createCSV():
+    try:
+        fileExists = os.path.isfile(csvFileName)
+        with open(csvFileName, 'a', encoding='utf-8') as csvFile:
+            csvWriter = csv.writer(csvFile)
 
-    cmdLine = r'SCHTASKS /{taskType} /SC {taskPeriod} /TN {taskName} /TR {taskPath} /ST {taskTime}' \
+            if not fileExists:
+                csvWriter.writerow(csvField)
+            else:
+                pass
+
+    except:
+        logger.exception("Create CSV error.")
+
+
+def writeCSV(rTaskName, rTaskPeriod, rTaskTime):
+    try:
+        with open(csvFileName, 'a+', newline='', encoding='utf-8') as csvFile:
+            row = [rTaskName, rTaskPeriod, rTaskTime]
+            write = csv.writer(csvFile)
+            write.writerow(row)
+    except:
+        logger.exception("Write CSV error.")
+
+def createCmdLine():
+    global cmdLineC
+
+    cmdLineC = r'SCHTASKS /{taskType} /SC {taskPeriod} /TN {taskName} /TR {taskPath} /ST {taskTime}' \
         .format(taskType=taskType, taskPeriod=taskPeriod, taskName=taskName, taskPath=taskPath, taskTime=taskTime)
 
-    return cmdLine
+    return cmdLineC
+
+
+def updateCmdLine():
+    global cmdLineU
+    cmdLineU = r'SCHTASKS /{taskType} /TN {taskName} /ST {taskTime}' \
+        .format(taskType=taskType, taskName=taskName, taskTime=taskTime)
 
 
 def createTask():
-    global cmdLine
+    global cmdLineC
 
     try:
-        # cmdLine = 'SCHTASKS /CREATE /SC DAILY /TN test /TR "D:\\Coding\\Python\\TSSR\\ExternalScript\\shutdownScript.exe" /ST 17:42'
-        # cmdLine = 'SCHTASKS /CREATE /SC DAILY /TN test /TR "C:Users\\benwu\\Desktop\\FinalYearProject-master\\Main.py.exe" /ST 17:44'
-        subprocess.call(['start', 'cmd', '/k', cmdLine], shell=True)
+        subprocess.call(['start', 'cmd', '/k', cmdLineC], shell=True)
         # __logger.info("Successfully written scheduled task")
     except Exception as e:
         print(e)

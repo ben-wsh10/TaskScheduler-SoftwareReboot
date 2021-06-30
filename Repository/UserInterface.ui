@@ -116,113 +116,10 @@
                     <property name="alignment">
                      <set>Qt::AlignCenter</set>
                     </property>
-                    <widget class="QRadioButton" name="radioDaily">
-                     <property name="geometry">
-                      <rect>
-                       <x>20</x>
-                       <y>26</y>
-                       <width>80</width>
-                       <height>50</height>
-                      </rect>
-                     </property>
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>50</width>
-                       <height>50</height>
-                      </size>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <family>Times New Roman,Times,serif</family>
-                       <pointsize>10</pointsize>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QRadioButton {
-}
-QRadioButton::indicator {
-    width: 15px;
-    height: 15px;
-}</string>
-                     </property>
-                     <property name="text">
-                      <string>Daily</string>
-                     </property>
-                    </widget>
-                    <widget class="QRadioButton" name="radioWeekly">
-                     <property name="geometry">
-                      <rect>
-                       <x>130</x>
-                       <y>26</y>
-                       <width>80</width>
-                       <height>50</height>
-                      </rect>
-                     </property>
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <family>Times New Roman,Times,serif</family>
-                       <pointsize>10</pointsize>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">
-QRadioButton::indicator {
-    width: 15px;
-    height: 15px;
-}</string>
-                     </property>
-                     <property name="text">
-                      <string>Weekly</string>
-                     </property>
-                    </widget>
-                    <widget class="QRadioButton" name="radioMonthly">
-                     <property name="geometry">
-                      <rect>
-                       <x>250</x>
-                       <y>26</y>
-                       <width>80</width>
-                       <height>50</height>
-                      </rect>
-                     </property>
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <family>Times New Roman,Times,serif</family>
-                       <pointsize>10</pointsize>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">
-QRadioButton::indicator {
-    width: 15px;
-    height: 15px;
-}</string>
-                     </property>
-                     <property name="text">
-                      <string>Monthly</string>
-                     </property>
-                    </widget>
                     <widget class="QComboBox" name="dropDownPeriod">
                      <property name="geometry">
                       <rect>
-                       <x>72</x>
+                       <x>75</x>
                        <y>80</y>
                        <width>200</width>
                        <height>25</height>
@@ -265,6 +162,48 @@ QRadioButton::indicator {
                        <string>-</string>
                       </property>
                      </item>
+                    </widget>
+                    <widget class="QComboBox" name="dropDownSchedule">
+                     <property name="geometry">
+                      <rect>
+                       <x>75</x>
+                       <y>45</y>
+                       <width>200</width>
+                       <height>25</height>
+                      </rect>
+                     </property>
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>200</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>200</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <family>Times New Roman,Times,serif</family>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QComboBox{
+	padding : 5px 0px 0px 5px;
+}</string>
+                     </property>
+                     <property name="frame">
+                      <bool>true</bool>
+                     </property>
                     </widget>
                    </widget>
                   </item>
@@ -327,7 +266,7 @@ QRadioButton::indicator {
                      </font>
                     </property>
                     <property name="title">
-                     <string>Time (24 hour format)</string>
+                     <string>Start Time (24 hour format)</string>
                     </property>
                     <property name="alignment">
                      <set>Qt::AlignCenter</set>
@@ -364,7 +303,7 @@ QRadioButton::indicator {
                      </property>
                      <property name="dateTime">
                       <datetime>
-                       <hour>8</hour>
+                       <hour>0</hour>
                        <minute>0</minute>
                        <second>0</second>
                        <year>1999</year>
@@ -1033,7 +972,7 @@ QRadioButton::indicator {
                     <property name="alignment">
                      <set>Qt::AlignCenter</set>
                     </property>
-                    <widget class="QComboBox" name="dropDowTaskName">
+                    <widget class="QComboBox" name="dropDownTaskName">
                      <property name="geometry">
                       <rect>
                        <x>30</x>
@@ -1127,7 +1066,7 @@ QRadioButton::indicator {
                      </font>
                     </property>
                     <property name="title">
-                     <string>Time (24 hour format)</string>
+                     <string>Start Time (24 hour format)</string>
                     </property>
                     <property name="alignment">
                      <set>Qt::AlignCenter</set>
@@ -1509,7 +1448,7 @@ QRadioButton::indicator {
            </font>
           </property>
           <property name="text">
-           <string>Create</string>
+           <string>Btn</string>
           </property>
          </widget>
         </item>

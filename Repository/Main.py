@@ -15,6 +15,7 @@ class Main(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
         UIC.startLogging()
+        UIC.createCSV()
         UIC.taskType = "CREATE"
         self.realTimeUpdates()
         self.initialiseObject()
@@ -24,6 +25,7 @@ class Main(QMainWindow, Ui_MainWindow):
         self.initialiseTabs()
         self.initialiseButtons()
         self.initialiseField()
+        self.initialiseMenu()
 
     # Initialise tabs
     def initialiseTabs(self):
@@ -31,17 +33,14 @@ class Main(QMainWindow, Ui_MainWindow):
 
     def initialiseButtons(self):
         # Push Buttons
+        self.cudButton.setText("Create")
         self.cudButton.setEnabled(False)
         self.cudButton.clicked.connect(lambda: self.createTask())
-        # Radio buttons
-        self.radioDaily.clicked.connect(lambda: self.periodButtonChanged())
-        self.radioWeekly.clicked.connect(lambda: self.periodButtonChanged())
-        self.radioMonthly.clicked.connect(lambda: self.periodButtonChanged())
-        # Combo box
-        self.dropDownPeriod.currentTextChanged.connect(lambda: self.periodValue())
         # QTimeEdit
         self.timePeriod.setTime(QTime(0, 0))
+        self.timePeriod2.setTime(QTime(0, 0))
         self.timePeriod.timeChanged.connect(lambda: self.periodTimeChanged())
+        self.timePeriod2.timeChanged.connect(lambda: self.periodTimeChanged())
 
     def initialiseField(self):
         # QLineEdit
@@ -49,19 +48,17 @@ class Main(QMainWindow, Ui_MainWindow):
         self.labelTaskName.setText("-")
         self.labelPeriod.setText("-")
 
+    def initialiseMenu(self):
+        self.dropDownSchedule.addItems(UIC.periodList)
+        # DropdownScheduler
+        self.dropDownSchedule.currentTextChanged.connect(lambda: self.periodMenuChanged())
+        # Combo box
+        self.dropDownPeriod.currentTextChanged.connect(lambda: self.periodValue())
+
     def resetDefault(self):
-        # reset radio buttons
-        self.radioDaily.setAutoExclusive(False)
-        self.radioDaily.setChecked(False)
-        self.radioDaily.setAutoExclusive(True)
-        self.radioWeekly.setAutoExclusive(False)
-        self.radioWeekly.setChecked(False)
-        self.radioWeekly.setAutoExclusive(True)
-        self.radioMonthly.setAutoExclusive(False)
-        self.radioMonthly.setChecked(False)
-        self.radioMonthly.setAutoExclusive(True)
-        UIC.taskPeriod = ""
         # reset dropdown menu
+        UIC.taskPeriod = ""
+        self.dropDownSchedule.setCurrentIndex(0)
         self.dropDownPeriod.clear()
         self.dropDownPeriod.addItem("-")
         # reset task name
@@ -69,6 +66,7 @@ class Main(QMainWindow, Ui_MainWindow):
         UIC.taskName = ""
         # reset task time
         self.timePeriod.setTime(QTime(0, 0))
+        self.timePeriod2.setTime(QTime(0, 0))
         UIC.taskTime = str("{:02}".format(self.timePeriod.time().hour())) + ":" + str(
             "{:02}".format(self.timePeriod.time().minute()))
         # reset labelcmdline
@@ -96,20 +94,37 @@ class Main(QMainWindow, Ui_MainWindow):
         self.realTimeUpdates()
 
     # Get task period
-    def periodButtonChanged(self):
-        if self.radioDaily.isChecked():
+    def periodMenuChanged(self):
+        if self.dropDownSchedule.currentText() == "Minute":
+            UIC.taskPeriod = "MINUTE"
+            self.minuteComboBox()
+            UIC.logger.info("MINUTE Period is selected.")
+        elif self.dropDownSchedule.currentText() == "Hourly":
+            UIC.taskPeriod = "HOURLY"
+            self.hourlyComboBox()
+            UIC.logger.info("HOURLY Period is selected.")
+        elif self.dropDownSchedule.currentText() == "Daily":
             UIC.taskPeriod = "DAILY"
             self.dailyComboBox()
             UIC.logger.info("Daily Period is selected.")
-        elif self.radioWeekly.isChecked():
+        elif self.dropDownSchedule.currentText() == "Weekly":
             UIC.taskPeriod = "WEEKLY"
             self.weeklyComboBox()
             UIC.logger.info("Weekly Period is selected.")
-        elif self.radioMonthly.isChecked():
+        elif self.dropDownSchedule.currentText() == "Monthly":
             UIC.taskPeriod = "MONTHLY"
             self.monthlyComboBox()
             UIC.logger.info("Monthly Period is selected.")
         self.realTimeUpdates()
+
+
+    def minuteComboBox(self):
+        self.dropDownPeriod.clear()
+        self.dropDownPeriod.addItems(UIC.minuteList)
+
+    def hourlyComboBox(self):
+        self.dropDownPeriod.clear()
+        self.dropDownPeriod.addItems(UIC.hourlyList)
 
     # Get daily drop down menu
     def dailyComboBox(self):
@@ -128,10 +143,25 @@ class Main(QMainWindow, Ui_MainWindow):
 
     # Get task period's day/date
     def periodValue(self):
-        if self.radioDaily.isChecked():
+        if self.dropDownSchedule.currentText() == "Minute":
+            if self.dropDownPeriod.currentIndex() != 0 and self.dropDownPeriod.currentIndex() != -1:
+                UIC.taskPeriod = "MINUTE"
+                UIC.taskPeriod = UIC.taskPeriod + " /MO " + str(
+                    re.search(r'\d+', self.dropDownPeriod.currentText()).group())
+            else:
+                UIC.taskPeriod = "MINUTE"
+        elif self.dropDownSchedule.currentText() == "Hourly":
+            if self.dropDownPeriod.currentIndex() != 0 and self.dropDownPeriod.currentIndex() != -1:
+                UIC.taskPeriod = "HOURLY"
+                UIC.taskPeriod = UIC.taskPeriod + " /MO " + str(
+                    re.search(r'\d+', self.dropDownPeriod.currentText()).group())
+                print(UIC.taskPeriod)
+            else:
+                UIC.taskPeriod = "HOURLY"
+        elif self.dropDownSchedule.currentText() == "Daily":
             # print(UIC.taskPeriod)
             pass
-        elif self.radioWeekly.isChecked():
+        elif self.dropDownSchedule.currentText() == "Weekly":
             if self.dropDownPeriod.currentIndex() != 0 and self.dropDownPeriod.currentIndex() != -1:
                 UIC.taskPeriod = "WEEKLY"
                 UIC.taskPeriod = UIC.taskPeriod + " /D " + self.dropDownPeriod.currentText()[:3]
@@ -139,7 +169,7 @@ class Main(QMainWindow, Ui_MainWindow):
                 UIC.logger.info("Day is selected.")
             else:
                 UIC.taskPeriod = "WEEKLY"
-        elif self.radioMonthly.isChecked():
+        elif self.dropDownSchedule.currentText() == "Monthly":
             if self.dropDownPeriod.currentIndex() != 0 and self.dropDownPeriod.currentIndex() != -1:
                 UIC.taskPeriod = "MONTHLY"
                 UIC.taskPeriod = UIC.taskPeriod + " /D " + str(
@@ -154,6 +184,8 @@ class Main(QMainWindow, Ui_MainWindow):
     def periodTimeChanged(self):
         UIC.taskTime = str("{:02}".format(self.timePeriod.time().hour())) + ":" + str(
             "{:02}".format(self.timePeriod.time().minute()))
+        UIC.taskTime = str("{:02}".format(self.timePeriod2.time().hour())) + ":" + str(
+            "{:02}".format(self.timePeriod2.time().minute()))
         self.realTimeUpdates()
         # print(UIC.taskTime)
         UIC.logger.info("Time is selected/changed.")
@@ -171,16 +203,18 @@ class Main(QMainWindow, Ui_MainWindow):
     # Update cmdLine label
     def updateLabelCmdLine(self):
         # print(UIC.updateCmdLine())
-        self.labelCmdLine.setText(UIC.updateCmdLine())
+        self.labelCmdLine.setText(UIC.createCmdLine())
+        self.labelNewTime.setText(UIC.taskTime)
 
     def createTaskCriteria(self):
         # Period Criteria
-        if self.radioWeekly.isChecked() or self.radioMonthly.isChecked():
+        if self.dropDownSchedule.currentText() == "Minute" or self.dropDownSchedule.currentText() == "Hourly" or \
+                self.dropDownSchedule.currentText() == "Weekly" or self.dropDownSchedule.currentText() == "Monthly":
             if self.dropDownPeriod.currentIndex() != 0 and self.dropDownPeriod.currentIndex() != -1:
                 UIC.radioCriteria = True
             else:
                 UIC.radioCriteria = False
-        elif self.radioDaily.isChecked():
+        elif self.dropDownSchedule.currentText() == "Daily":
             UIC.radioCriteria = True
         else:
             UIC.radioCriteria = False
@@ -196,13 +230,14 @@ class Main(QMainWindow, Ui_MainWindow):
             UIC.nameCriteria = False
         # Enable button
         if UIC.radioCriteria is True and UIC.timeCriteria is True and UIC.nameCriteria is True:
-            print(UIC.cmdLine)
+            print(UIC.cmdLineC)
             self.cudButton.setEnabled(True)
         else:
             self.cudButton.setEnabled(False)
 
     def createTask(self):
         UIC.createTask()
+        UIC.writeCSV(UIC.taskName, UIC.taskPeriod, UIC.taskTime)
 
 
 if __name__ == '__main__':

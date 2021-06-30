@@ -1,5 +1,6 @@
 import sys
 from distutils.core import setup
+import py2exe
 
 # python to exe script
 # 1. Open cmd prompt in this file directory
@@ -13,6 +14,6 @@ sys.argv.append('py2exe')
 setup(
     options = {'py2exe': {'bundle_files': 1, 'compressed': True}},
     # Input absolute path below
-    windows = [{'script': "D:\Coding\Python\TS&SR\Shutdown Script\shutdownScript.py"}],
+    console = [{'script': "D:\Coding\Python\TS&SR\BackEnd\Main.py"}],
     zipfile = None,
 )

@@ -4,9 +4,8 @@ import sys
 from PyQt5.QtCore import QTime
 from PyQt5.QtWidgets import QApplication, QMainWindow
 
-from FrontEnd.UserInterface import Ui_MainWindow
+from UserInterface import Ui_MainWindow
 import UIController as UIC
-
 
 class Main(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):

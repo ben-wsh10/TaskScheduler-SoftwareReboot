@@ -1,13 +1,15 @@
+import os
 import subprocess
 import logging
-
-import FrontEnd.UserInterface as UI
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-taskType, taskPeriod, taskName, taskPath, taskTime = "", "", "", "\"D:\Coding\Python\TS&SR\Shutdown Script\shutdownScript.exe\"", ""
-cmdline = ""
+from pathlib import Path
+
+taskType, taskPeriod, taskName, taskPath, taskTime = "", "", "", os.path.abspath("shutdownScript.exe"), ""
+radioCriteria, timeCriteria, nameCriteria = False, False, False
+cmdLine = ""
 dailyList = ["-"]
 weekList = ["Select a Day", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]
 # weekListConversion = ["MON", "TUES", "WED", "THU", "FRI", "SAT", "SUN"]
@@ -38,23 +40,24 @@ def startLogging():
 
 
 def updateCmdLine():
-    global cmdline
+    global cmdLine
 
-    cmdLine = 'SCHTASKS /{taskType} /SC {taskPeriod} /TN {taskName} /TR {taskPath} /ST {taskTime}' \
+    cmdLine = r'SCHTASKS /{taskType} /SC {taskPeriod} /TN {taskName} /TR {taskPath} /ST {taskTime}' \
         .format(taskType=taskType, taskPeriod=taskPeriod, taskName=taskName, taskPath=taskPath, taskTime=taskTime)
 
     return cmdLine
 
 
 def createTask():
-    global cmdline
+    global cmdLine
 
     try:
-        cmdLine = 'SCHTASKS /{taskType} /SC {taskPeriod} /TN {taskName} /TR {taskPath} /ST {taskTime}' \
-            .format(taskType=taskType, taskPeriod=taskPeriod, taskName=taskName, taskPath=taskPath, taskTime=taskTime)
-        print(cmdLine)
-        # subprocess.call(['start', 'cmd', '/k', cmdLine], shell=True)
+        # cmdLine = 'SCHTASKS /CREATE /SC DAILY /TN test /TR "D:\\Coding\\Python\\TSSR\\ShutdownScript\\shutdownScript.exe" /ST 17:42'
+        # cmdLine = 'SCHTASKS /CREATE /SC DAILY /TN test /TR "C:Users\\benwu\\Desktop\\FinalYearProject-master\\Main.py.exe" /ST 17:44'
+        subprocess.call(['start', 'cmd', '/k', cmdLine], shell=True)
         # __logger.info("Successfully written scheduled task")
     except Exception as e:
         print(e)
         logger.exception("Unable to create scheduled task")
+
+createTask()

@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 from UserInterface import Ui_MainWindow
 import UIController as UIC
 
+
 class Main(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         # Set up User Interface
@@ -30,8 +31,8 @@ class Main(QMainWindow, Ui_MainWindow):
 
     def initialiseButtons(self):
         # Push Buttons
-        self.createButton.setEnabled(False)
-        self.createButton.clicked.connect(lambda: self.createTask())
+        self.cudButton.setEnabled(False)
+        self.cudButton.clicked.connect(lambda: self.createTask())
         # Radio buttons
         self.radioDaily.clicked.connect(lambda: self.periodButtonChanged())
         self.radioWeekly.clicked.connect(lambda: self.periodButtonChanged())
@@ -45,6 +46,8 @@ class Main(QMainWindow, Ui_MainWindow):
     def initialiseField(self):
         # QLineEdit
         self.lineTaskName.textChanged.connect(lambda: self.taskNameChanged())
+        self.labelTaskName.setText("-")
+        self.labelPeriod.setText("-")
 
     def resetDefault(self):
         # reset radio buttons
@@ -73,18 +76,21 @@ class Main(QMainWindow, Ui_MainWindow):
         # Reset criteria
         UIC.radioCriteria, UIC.timeCriteria, UIC.nameCriteria = False, False, False
         # reset createButton
-        self.createButton.setEnabled(False)
+        self.cudButton.setEnabled(False)
 
     # Get task type
     def tabChanged(self):
         if self.tabWidget.currentIndex() == 0:
             UIC.taskType = "CREATE"
+            self.cudButton.setText("Create")
             UIC.logger.info("CREATE Tab is selected.")
         elif self.tabWidget.currentIndex() == 1:
             UIC.taskType = "CHANGE"
+            self.cudButton.setText("Update")
             UIC.logger.info("UPDATE Tab is selected.")
         elif self.tabWidget.currentIndex() == 2:
             UIC.taskType = "DELETE"
+            self.cudButton.setText("Delete")
             UIC.logger.info("DELETE Tab is selected.")
         self.resetDefault()
         self.realTimeUpdates()
@@ -168,7 +174,6 @@ class Main(QMainWindow, Ui_MainWindow):
         self.labelCmdLine.setText(UIC.updateCmdLine())
 
     def createTaskCriteria(self):
-
         # Period Criteria
         if self.radioWeekly.isChecked() or self.radioMonthly.isChecked():
             if self.dropDownPeriod.currentIndex() != 0 and self.dropDownPeriod.currentIndex() != -1:
@@ -192,12 +197,12 @@ class Main(QMainWindow, Ui_MainWindow):
         # Enable button
         if UIC.radioCriteria is True and UIC.timeCriteria is True and UIC.nameCriteria is True:
             print(UIC.cmdLine)
-            self.createButton.setEnabled(True)
+            self.cudButton.setEnabled(True)
         else:
-            self.createButton.setEnabled(False)
+            self.cudButton.setEnabled(False)
 
     def createTask(self):
-            UIC.createTask()
+        UIC.createTask()
 
 
 if __name__ == '__main__':

@@ -52,7 +52,7 @@ def createTask():
     global cmdLine
 
     try:
-        # cmdLine = 'SCHTASKS /CREATE /SC DAILY /TN test /TR "D:\\Coding\\Python\\TSSR\\ShutdownScript\\shutdownScript.exe" /ST 17:42'
+        # cmdLine = 'SCHTASKS /CREATE /SC DAILY /TN test /TR "D:\\Coding\\Python\\TSSR\\ExternalScript\\shutdownScript.exe" /ST 17:42'
         # cmdLine = 'SCHTASKS /CREATE /SC DAILY /TN test /TR "C:Users\\benwu\\Desktop\\FinalYearProject-master\\Main.py.exe" /ST 17:44'
         subprocess.call(['start', 'cmd', '/k', cmdLine], shell=True)
         # __logger.info("Successfully written scheduled task")

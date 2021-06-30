@@ -5,9 +5,9 @@ import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-from pathlib import Path
 
-taskType, taskPeriod, taskName, taskPath, taskTime = "", "", "", os.path.abspath("shutdownScript.exe"), ""
+taskType, taskPeriod, taskName, taskPath, taskTime = "", "", "", os.path.abspath(
+    "shutdownScript.exe"), ""
 radioCriteria, timeCriteria, nameCriteria = False, False, False
 cmdLine = ""
 dailyList = ["-"]
@@ -59,5 +59,3 @@ def createTask():
     except Exception as e:
         print(e)
         logger.exception("Unable to create scheduled task")
-
-createTask()

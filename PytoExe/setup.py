@@ -14,6 +14,6 @@ sys.argv.append('py2exe')
 setup(
     options = {'py2exe': {'bundle_files': 1, 'compressed': True}},
     # Input absolute path below
-    console = [{'script': "D:\Coding\Python\TS&SR\BackEnd\Main.py"}],
+    console = [{'script': "D:\Coding\Python\TSSR\Main.py"}],
     zipfile = None,
 )

@@ -265,6 +265,8 @@ class Main(QMainWindow, Ui_MainWindow):
         elif self.tabWidget.currentIndex() == 1:
             UIC.updateTask()
             UIC.updateCSV(UIC.taskName, UIC.taskTime)
+            self.labelOldTime.setText(UIC.taskTime)
+            self.realTimeUpdates()
 
 
     def readTask(self):
@@ -280,7 +282,7 @@ class Main(QMainWindow, Ui_MainWindow):
                     UIC.taskPeriodList.append(line.split(",")[1])
                     UIC.taskTimeList.append(line.split(",")[2].strip("\n"))
 
-                    self.dropDownTaskName.addItems(UIC.taskNameList)
+            self.dropDownTaskName.addItems(UIC.taskNameList)
 
 
     def populateUpdateData(self):

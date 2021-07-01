@@ -95,6 +95,8 @@ def updateCSV(rTaskName, rTaskTime):
                     tmp = row
                     tmp[2] = rTaskTime
                     writer.writerow(row)
+                else:
+                    writer.writerow(row)
         shutil.move(tempfile.name, csvFileName)
     except:
         logger.exception("update CSV error.")

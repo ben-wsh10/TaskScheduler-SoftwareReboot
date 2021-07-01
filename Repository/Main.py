@@ -55,6 +55,7 @@ class Main(QMainWindow, Ui_MainWindow):
         # Combo box
         self.dropDownPeriod.currentTextChanged.connect(lambda: self.periodValue())
         self.dropDownTaskName.currentTextChanged.connect(lambda: self.populateUpdateData())
+        self.dropDownTaskName2.currentTextChanged.connect(lambda: self.populateUpdateData())
 
     def resetDefault(self):
         # reset dropdown menu
@@ -91,6 +92,7 @@ class Main(QMainWindow, Ui_MainWindow):
         elif self.tabWidget.currentIndex() == 2:
             UIC.taskType = "DELETE"
             self.cudButton.setText("Delete")
+            self.readTask()
             UIC.logger.info("DELETE Tab is selected.")
         self.resetDefault()
         self.realTimeUpdates()
@@ -274,7 +276,6 @@ class Main(QMainWindow, Ui_MainWindow):
             lines = csvFile.readlines()
 
             UIC.taskNameList, UIC.taskPeriodList, UIC.taskTimeList = ["-"], ["-"], ["00:00"]
-            self.dropDownTaskName.clear()
 
             for line in lines:
                 if line != "taskName,taskPeriod,taskTime\n" and line != "\n":
@@ -282,16 +283,28 @@ class Main(QMainWindow, Ui_MainWindow):
                     UIC.taskPeriodList.append(line.split(",")[1])
                     UIC.taskTimeList.append(line.split(",")[2].strip("\n"))
 
-            self.dropDownTaskName.addItems(UIC.taskNameList)
+            if self.tabWidget.currentIndex() == 1:
+                self.dropDownTaskName.clear()
+                self.dropDownTaskName.addItems(UIC.taskNameList)
+            elif self.tabWidget.currentIndex() == 2:
+                self.dropDownTaskName2.clear()
+                self.dropDownTaskName2.addItems(UIC.taskNameList)
 
 
     def populateUpdateData(self):
-        if self.dropDownTaskName.currentIndex() != 0 and self.dropDownTaskName.currentIndex() != -1:
-            currentTaskNameIndex = self.dropDownTaskName.currentIndex()
-            UIC.taskName = self.dropDownTaskName.currentText()
-            self.labelTaskName.setText(UIC.taskNameList[currentTaskNameIndex])
-            self.labelPeriod.setText(UIC.taskPeriodList[currentTaskNameIndex])
-            self.labelOldTime.setText(UIC.taskTimeList[currentTaskNameIndex])
+        if self.tabWidget.currentIndex() == 1:
+            if self.dropDownTaskName.currentIndex() != 0 and self.dropDownTaskName.currentIndex() != -1:
+                currentTaskNameIndex = self.dropDownTaskName.currentIndex()
+                UIC.taskName = self.dropDownTaskName.currentText()
+                self.labelTaskName.setText(UIC.taskNameList[currentTaskNameIndex])
+                self.labelPeriod.setText(UIC.taskPeriodList[currentTaskNameIndex])
+                self.labelOldTime.setText(UIC.taskTimeList[currentTaskNameIndex])
+        elif self.tabWidget.currentIndex() == 2:
+            if self.dropDownTaskName2.currentIndex() != 0 and self.dropDownTaskName2.currentIndex() != -1:
+                currentTaskNameIndex = self.dropDownTaskName2.currentIndex()
+                UIC.taskName = self.dropDownTaskName2.currentText()
+                self.labelPeriod2.setText(UIC.taskPeriodList[currentTaskNameIndex])
+                self.labelTime.setText(UIC.taskTimeList[currentTaskNameIndex])
         self.realTimeUpdates()
 
 if __name__ == '__main__':

@@ -3,6 +3,9 @@ import os
 import subprocess
 import logging
 
+from tempfile import NamedTemporaryFile
+import shutil
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
@@ -74,6 +77,25 @@ def writeCSV(rTaskName, rTaskPeriod, rTaskTime):
             row = [rTaskName, rTaskPeriod, rTaskTime]
             write = csv.writer(csvFile)
             write.writerow(row)
+    except:
+        logger.exception("Write CSV error.")
+
+def updateCSV(rTaskName, rTaskTime):
+    try:
+        tempfile = NamedTemporaryFile('w+t', newline='', delete=False)
+        with open(csvFileName, 'r', newline='') as csvFile, tempfile:
+            reader = csv.reader(csvFile, delimiter=',')
+            writer = csv.writer(tempfile, delimiter=',')
+            for row in reader:
+                if len(row) == 0:
+                    writer.writerow(row)
+                elif row[0] == "taskName" and row[1] == "taskPeriod" and row[2] == "taskTime":
+                    writer.writerow(row)
+                elif row[0] == rTaskName:
+                    tmp = row
+                    tmp[2] = rTaskTime
+                    writer.writerow(row)
+        shutil.move(tempfile.name, csvFileName)
     except:
         logger.exception("Write CSV error.")
 

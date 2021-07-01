@@ -8,12 +8,14 @@ logger.setLevel(logging.INFO)
 
 taskType, taskPeriod, taskName, taskPath, taskTime = "", "", "", os.path.abspath(
     "shutdownScript.exe"), ""
-radioCriteria, timeCriteria, nameCriteria = False, False, False
+periodCriteriaC, timeCriteriaC, nameCriteriaC = False, False, False
+timerCriteriaU = False
 cmdLineC = ""
 cmdLineU = ""
 
 csvFileName = "data.csv"
 csvField = ["taskName", "taskPeriod", "taskTime"]
+taskNameList, taskPeriodList, taskTimeList = [], [], []
 
 periodList = ["-", "Minute", "Hourly", "Daily", "Weekly", "Monthly"]
 
@@ -89,6 +91,8 @@ def updateCmdLine():
     cmdLineU = r'SCHTASKS /{taskType} /TN {taskName} /ST {taskTime}' \
         .format(taskType=taskType, taskName=taskName, taskTime=taskTime)
 
+    return cmdLineU
+
 
 def createTask():
     global cmdLineC
@@ -99,3 +103,13 @@ def createTask():
     except Exception as e:
         print(e)
         logger.exception("Unable to create scheduled task")
+
+def updateTask():
+    global cmdLineU
+
+    try:
+        subprocess.call(['start', 'cmd', '/k', cmdLineU], shell=True)
+        # __logger.info("Successfully written scheduled task")
+    except Exception as e:
+        print(e)
+        logger.exception("Unable to update scheduled task")

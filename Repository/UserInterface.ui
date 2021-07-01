@@ -56,7 +56,7 @@
            </font>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tab">
            <attribute name="title">
@@ -303,12 +303,12 @@
                      </property>
                      <property name="dateTime">
                       <datetime>
-                       <hour>0</hour>
+                       <hour>16</hour>
                        <minute>0</minute>
                        <second>0</second>
                        <year>1999</year>
                        <month>12</month>
-                       <day>31</day>
+                       <day>30</day>
                       </datetime>
                      </property>
                      <property name="maximumDateTime">
@@ -318,7 +318,7 @@
                        <second>59</second>
                        <year>1999</year>
                        <month>12</month>
-                       <day>31</day>
+                       <day>30</day>
                       </datetime>
                      </property>
                      <property name="currentSection">
@@ -1213,7 +1213,7 @@
                       <rect>
                        <x>20</x>
                        <y>90</y>
-                       <width>301</width>
+                       <width>41</width>
                        <height>21</height>
                       </rect>
                      </property>
@@ -1224,16 +1224,16 @@
                       </font>
                      </property>
                      <property name="text">
-                      <string>Time changed from</string>
+                      <string>From</string>
                      </property>
                     </widget>
                     <widget class="QLabel" name="labelOldTime">
                      <property name="geometry">
                       <rect>
-                       <x>158</x>
+                       <x>100</x>
                        <y>90</y>
-                       <width>61</width>
-                       <height>20</height>
+                       <width>71</width>
+                       <height>21</height>
                       </rect>
                      </property>
                      <property name="sizePolicy">
@@ -1254,16 +1254,16 @@
                       <string>00:00</string>
                      </property>
                      <property name="alignment">
-                      <set>Qt::AlignCenter</set>
+                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                      </property>
                     </widget>
                     <widget class="QLabel" name="labelNewTime">
                      <property name="geometry">
                       <rect>
-                       <x>258</x>
+                       <x>250</x>
                        <y>90</y>
-                       <width>61</width>
-                       <height>20</height>
+                       <width>71</width>
+                       <height>21</height>
                       </rect>
                      </property>
                      <property name="sizePolicy">
@@ -1285,7 +1285,7 @@
                       <string>00:00</string>
                      </property>
                      <property name="alignment">
-                      <set>Qt::AlignCenter</set>
+                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                      </property>
                     </widget>
                     <widget class="QLabel" name="labelTaskName">
@@ -1341,7 +1341,7 @@
                     <widget class="QLabel" name="label_5">
                      <property name="geometry">
                       <rect>
-                       <x>231</x>
+                       <x>190</x>
                        <y>90</y>
                        <width>16</width>
                        <height>21</height>

@@ -35,7 +35,7 @@ class Main(QMainWindow, Ui_MainWindow):
         # Push Buttons
         self.cudButton.setText("Create")
         self.cudButton.setEnabled(False)
-        self.cudButton.clicked.connect(lambda: self.createTask())
+        self.cudButton.clicked.connect(lambda: self.triggerCUDBtn())
         # QTimeEdit
         self.timePeriod.setTime(QTime(0, 0))
         self.timePeriod2.setTime(QTime(0, 0))
@@ -54,6 +54,7 @@ class Main(QMainWindow, Ui_MainWindow):
         self.dropDownSchedule.currentTextChanged.connect(lambda: self.periodMenuChanged())
         # Combo box
         self.dropDownPeriod.currentTextChanged.connect(lambda: self.periodValue())
+        self.dropDownTaskName.currentTextChanged.connect(lambda: self.populateUpdateData())
 
     def resetDefault(self):
         # reset dropdown menu
@@ -72,7 +73,7 @@ class Main(QMainWindow, Ui_MainWindow):
         # reset labelcmdline
         self.realTimeUpdates()
         # Reset criteria
-        UIC.radioCriteria, UIC.timeCriteria, UIC.nameCriteria = False, False, False
+        UIC.periodCriteriaC, UIC.timeCriteriaC, UIC.nameCriteriaC = False, False, False
         # reset createButton
         self.cudButton.setEnabled(False)
 
@@ -85,6 +86,7 @@ class Main(QMainWindow, Ui_MainWindow):
         elif self.tabWidget.currentIndex() == 1:
             UIC.taskType = "CHANGE"
             self.cudButton.setText("Update")
+            self.readTask()
             UIC.logger.info("UPDATE Tab is selected.")
         elif self.tabWidget.currentIndex() == 2:
             UIC.taskType = "DELETE"
@@ -92,6 +94,7 @@ class Main(QMainWindow, Ui_MainWindow):
             UIC.logger.info("DELETE Tab is selected.")
         self.resetDefault()
         self.realTimeUpdates()
+
 
     # Get task period
     def periodMenuChanged(self):
@@ -182,10 +185,12 @@ class Main(QMainWindow, Ui_MainWindow):
 
     # Get time valuetime
     def periodTimeChanged(self):
-        UIC.taskTime = str("{:02}".format(self.timePeriod.time().hour())) + ":" + str(
-            "{:02}".format(self.timePeriod.time().minute()))
-        UIC.taskTime = str("{:02}".format(self.timePeriod2.time().hour())) + ":" + str(
-            "{:02}".format(self.timePeriod2.time().minute()))
+        if self.tabWidget.currentIndex() == 0:
+            UIC.taskTime = str("{:02}".format(self.timePeriod.time().hour())) + ":" + str(
+                "{:02}".format(self.timePeriod.time().minute()))
+        elif self.tabWidget.currentIndex() == 1:
+            UIC.taskTime = str("{:02}".format(self.timePeriod2.time().hour())) + ":" + str(
+                "{:02}".format(self.timePeriod2.time().minute()))
         self.realTimeUpdates()
         # print(UIC.taskTime)
         UIC.logger.info("Time is selected/changed.")
@@ -199,11 +204,14 @@ class Main(QMainWindow, Ui_MainWindow):
     def realTimeUpdates(self):
         self.updateLabelCmdLine()
         self.createTaskCriteria()
+        self.updateTaskCriteria()
 
     # Update cmdLine label
     def updateLabelCmdLine(self):
-        # print(UIC.updateCmdLine())
-        self.labelCmdLine.setText(UIC.createCmdLine())
+        if self.tabWidget.currentIndex() == 0:
+            self.labelCmdLine.setText(UIC.createCmdLine())
+        elif self.tabWidget.currentIndex() == 1:
+            self.labelCmdLine.setText(UIC.updateCmdLine())
         self.labelNewTime.setText(UIC.taskTime)
 
     def createTaskCriteria(self):
@@ -211,34 +219,77 @@ class Main(QMainWindow, Ui_MainWindow):
         if self.dropDownSchedule.currentText() == "Minute" or self.dropDownSchedule.currentText() == "Hourly" or \
                 self.dropDownSchedule.currentText() == "Weekly" or self.dropDownSchedule.currentText() == "Monthly":
             if self.dropDownPeriod.currentIndex() != 0 and self.dropDownPeriod.currentIndex() != -1:
-                UIC.radioCriteria = True
+                UIC.periodCriteriaC = True
             else:
-                UIC.radioCriteria = False
+                UIC.periodCriteriaC = False
         elif self.dropDownSchedule.currentText() == "Daily":
-            UIC.radioCriteria = True
+            UIC.periodCriteriaC = True
         else:
-            UIC.radioCriteria = False
+            UIC.periodCriteriaC = False
         # Time Criteria
         if UIC.taskTime != "":
-            UIC.timeCriteria = True
+            UIC.timeCriteriaC = True
         else:
-            UIC.timeCriteria = False
+            UIC.timeCriteriaC = False
         # Name Criteria
         if UIC.taskName != "" and " " not in UIC.taskName:
-            UIC.nameCriteria = True
+            UIC.nameCriteriaC = True
         else:
-            UIC.nameCriteria = False
+            UIC.nameCriteriaC = False
         # Enable button
-        if UIC.radioCriteria is True and UIC.timeCriteria is True and UIC.nameCriteria is True:
+        if UIC.periodCriteriaC is True and UIC.timeCriteriaC is True and UIC.nameCriteriaC is True:
             print(UIC.cmdLineC)
             self.cudButton.setEnabled(True)
         else:
             self.cudButton.setEnabled(False)
 
-    def createTask(self):
-        UIC.createTask()
-        UIC.writeCSV(UIC.taskName, UIC.taskPeriod, UIC.taskTime)
+    def updateTaskCriteria(self):
+        if self.tabWidget.currentIndex() == 1:
+            if self.dropDownTaskName.currentIndex() != 0 and self.dropDownTaskName.currentIndex() != -1:
+                if self.labelOldTime.text() != self.labelNewTime.text():
+                    UIC.timerCriteriaU = True
+                else:
+                    UIC.timerCriteriaU = False
+            else:
+                UIC.timerCriteriaU = False
+            if UIC.timerCriteriaU is True:
+                self.cudButton.setEnabled(True)
+            else:
+                self.cudButton.setEnabled(False)
 
+
+    def triggerCUDBtn(self):
+        if self.tabWidget.currentIndex() == 0:
+            UIC.createTask()
+            UIC.writeCSV(UIC.taskName, UIC.taskPeriod, UIC.taskTime)
+        elif self.tabWidget.currentIndex() == 1:
+            UIC.updateTask()
+
+
+    def readTask(self):
+        with open(UIC.csvFileName) as csvFile:
+            lines = csvFile.readlines()
+
+            UIC.taskNameList, UIC.taskPeriodList, UIC.taskTimeList = ["-"], ["-"], ["00:00"]
+            self.dropDownTaskName.clear()
+
+            for line in lines:
+                if line != "taskName,taskPeriod,taskTime\n" and line != "\n":
+                    UIC.taskNameList.append(line.split(",")[0])
+                    UIC.taskPeriodList.append(line.split(",")[1])
+                    UIC.taskTimeList.append(line.split(",")[2].strip("\n"))
+
+                    self.dropDownTaskName.addItems(UIC.taskNameList)
+
+
+    def populateUpdateData(self):
+        if self.dropDownTaskName.currentIndex() != 0 and self.dropDownTaskName.currentIndex() != -1:
+            currentTaskNameIndex = self.dropDownTaskName.currentIndex()
+            UIC.taskName = self.dropDownTaskName.currentText()
+            self.labelTaskName.setText(UIC.taskNameList[currentTaskNameIndex])
+            self.labelPeriod.setText(UIC.taskPeriodList[currentTaskNameIndex])
+            self.labelOldTime.setText(UIC.taskTimeList[currentTaskNameIndex])
+        self.realTimeUpdates()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

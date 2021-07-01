@@ -264,6 +264,7 @@ class Main(QMainWindow, Ui_MainWindow):
             UIC.writeCSV(UIC.taskName, UIC.taskPeriod, UIC.taskTime)
         elif self.tabWidget.currentIndex() == 1:
             UIC.updateTask()
+            UIC.updateCSV(UIC.taskName, UIC.taskTime)
 
 
     def readTask(self):

@@ -97,7 +97,7 @@ def updateCSV(rTaskName, rTaskTime):
                     writer.writerow(row)
         shutil.move(tempfile.name, csvFileName)
     except:
-        logger.exception("Write CSV error.")
+        logger.exception("update CSV error.")
 
 def createCmdLine():
     global cmdLineC

@@ -15,7 +15,7 @@ class Main(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
         UIC.startLogging()
-        UIC.createCSV()
+        UIC.newCSV()
         UIC.taskType = "CREATE"
         self.realTimeUpdates()
         self.initialiseObject()
@@ -207,6 +207,7 @@ class Main(QMainWindow, Ui_MainWindow):
         self.updateLabelCmdLine()
         self.createTaskCriteria()
         self.updateTaskCriteria()
+        self.deleteTaskCriteria()
 
     # Update cmdLine label
     def updateLabelCmdLine(self):
@@ -214,7 +215,9 @@ class Main(QMainWindow, Ui_MainWindow):
             self.labelCmdLine.setText(UIC.createCmdLine())
         elif self.tabWidget.currentIndex() == 1:
             self.labelCmdLine.setText(UIC.updateCmdLine())
-        self.labelNewTime.setText(UIC.taskTime)
+            self.labelNewTime.setText(UIC.taskTime)
+        elif self.tabWidget.currentIndex() == 2:
+            self.labelCmdLine.setText(UIC.deleteCmdLine())
 
     def createTaskCriteria(self):
         # Period Criteria
@@ -259,15 +262,32 @@ class Main(QMainWindow, Ui_MainWindow):
             else:
                 self.cudButton.setEnabled(False)
 
+    def deleteTaskCriteria(self):
+        if self.tabWidget.currentIndex() == 2:
+            if self.dropDownTaskName2.currentIndex() != 0 and self.dropDownTaskName2.currentIndex() != -1:
+                UIC.nameCriteriaD = True
+            else:
+                UIC.nameCriteriaD = False
+            if UIC.nameCriteriaD is True:
+                self.cudButton.setEnabled(True)
+            else:
+                self.cudButton.setEnabled(False)
 
     def triggerCUDBtn(self):
         if self.tabWidget.currentIndex() == 0:
             UIC.createTask()
-            UIC.writeCSV(UIC.taskName, UIC.taskPeriod, UIC.taskTime)
+            UIC.createCSV(UIC.taskName, UIC.taskPeriod, UIC.taskTime)
         elif self.tabWidget.currentIndex() == 1:
             UIC.updateTask()
             UIC.updateCSV(UIC.taskName, UIC.taskTime)
             self.labelOldTime.setText(UIC.taskTime)
+            self.realTimeUpdates()
+        elif self.tabWidget.currentIndex() == 2:
+            UIC.deleteTask()
+            UIC.deleteCSV(UIC.taskName)
+            self.dropDownTaskName2.setCurrentIndex(0)
+            self.labelPeriod2.setText("-")
+            self.labelTime.setText("00:00")
             self.realTimeUpdates()
 
 

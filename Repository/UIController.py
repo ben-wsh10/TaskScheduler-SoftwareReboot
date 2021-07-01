@@ -13,8 +13,10 @@ taskType, taskPeriod, taskName, taskPath, taskTime = "", "", "", os.path.abspath
     "shutdownScript.exe"), ""
 periodCriteriaC, timeCriteriaC, nameCriteriaC = False, False, False
 timerCriteriaU = False
+nameCriteriaD = False
 cmdLineC = ""
 cmdLineU = ""
+cmdLineD = ""
 
 csvFileName = "data.csv"
 csvField = ["taskName", "taskPeriod", "taskTime"]
@@ -56,7 +58,7 @@ def startLogging():
     logger.addHandler(fileHandler)
 
 
-def createCSV():
+def newCSV():
     try:
         fileExists = os.path.isfile(csvFileName)
         with open(csvFileName, 'a', encoding='utf-8') as csvFile:
@@ -71,7 +73,7 @@ def createCSV():
         logger.exception("Create CSV error.")
 
 
-def writeCSV(rTaskName, rTaskPeriod, rTaskTime):
+def createCSV(rTaskName, rTaskPeriod, rTaskTime):
     try:
         with open(csvFileName, 'a+', newline='', encoding='utf-8') as csvFile:
             row = [rTaskName, rTaskPeriod, rTaskTime]
@@ -79,6 +81,7 @@ def writeCSV(rTaskName, rTaskPeriod, rTaskTime):
             write.writerow(row)
     except:
         logger.exception("Write CSV error.")
+
 
 def updateCSV(rTaskName, rTaskTime):
     try:
@@ -101,6 +104,27 @@ def updateCSV(rTaskName, rTaskTime):
     except:
         logger.exception("update CSV error.")
 
+
+def deleteCSV(rTaskName):
+    try:
+        tempfile = NamedTemporaryFile('w+t', newline='', delete=False)
+        with open(csvFileName, 'r', newline='') as csvFile, tempfile:
+            reader = csv.reader(csvFile, delimiter=',')
+            writer = csv.writer(tempfile, delimiter=',')
+            for row in reader:
+                if len(row) == 0:
+                    writer.writerow(row)
+                elif row[0] == "taskName" and row[1] == "taskPeriod" and row[2] == "taskTime":
+                    writer.writerow(row)
+                elif row[0] == rTaskName:
+                    pass
+                else:
+                    writer.writerow(row)
+        shutil.move(tempfile.name, csvFileName)
+    except:
+        logger.exception("update CSV error.")
+
+
 def createCmdLine():
     global cmdLineC
 
@@ -118,6 +142,14 @@ def updateCmdLine():
     return cmdLineU
 
 
+def deleteCmdLine():
+    global cmdLineD
+    cmdLineD = r'SCHTASKS /{taskType} /TN {taskName}' \
+        .format(taskType=taskType, taskName=taskName)
+
+    return cmdLineD
+
+
 def createTask():
     global cmdLineC
 
@@ -128,6 +160,7 @@ def createTask():
         print(e)
         logger.exception("Unable to create scheduled task")
 
+
 def updateTask():
     global cmdLineU
 
@@ -137,3 +170,14 @@ def updateTask():
     except Exception as e:
         print(e)
         logger.exception("Unable to update scheduled task")
+
+
+def deleteTask():
+    global cmdLineD
+
+    try:
+        subprocess.call(['start', 'cmd', '/k', cmdLineD], shell=True)
+        # __logger.info("Successfully written scheduled task")
+    except Exception as e:
+        print(e)
+        logger.exception("Unable to delete scheduled task")

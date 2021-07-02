@@ -144,7 +144,7 @@ def updateCmdLine():
 
 def deleteCmdLine():
     global cmdLineD
-    cmdLineD = r'SCHTASKS /{taskType} /TN {taskName}' \
+    cmdLineD = r'SCHTASKS /{taskType} /TN {taskName} /f' \
         .format(taskType=taskType, taskName=taskName)
 
     return cmdLineD
@@ -154,8 +154,9 @@ def createTask():
     global cmdLineC
 
     try:
-        subprocess.call(['start', 'cmd', '/k', cmdLineC], shell=True)
+        # subprocess.call(['start', 'cmd', '/k', cmdLineC], shell=True)
         # __logger.info("Successfully written scheduled task")
+        subprocess.run(cmdLineC, shell=True)
     except Exception as e:
         print(e)
         logger.exception("Unable to create scheduled task")
@@ -178,6 +179,23 @@ def deleteTask():
     try:
         subprocess.call(['start', 'cmd', '/k', cmdLineD], shell=True)
         # __logger.info("Successfully written scheduled task")
+        # p1 = subprocess.run(cmdLineD + ' | y', capture_output=True, text=True, shell=True)
+        # subprocess.run("y", input=p1.stdout)
+        # p1 = subprocess.run([cmdLineD], capture_output=True, shell=True)
+        # print(p1.stdout)
+        # p2 = subprocess.run(['y'], capture_output=True, text=True, input= p1.stdout)
+        # print(p2.stdout)
+        # print(cmdLineD.encode('utf-8'))
+        # proc = subprocess.Popen('cmd.exe', stdin=subprocess.PIPE)
+        # proc.stdin.write(cmdLineD.encode('utf-8'))
+        # proc.stdin.flush()
+        # proc.stdin.write(b"y")
+        # proc.stdin.close()
+        print(cmdLineD)
+        # subprocess.run(["SCHTASKS /DELETE /TN test /f"], capture_output=True, input="y".encode(), shell=True)
+
+
+
     except Exception as e:
         print(e)
         logger.exception("Unable to delete scheduled task")

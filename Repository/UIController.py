@@ -51,6 +51,7 @@ monthList = ["Select a date",
              ]
 
 
+# Logging function
 def startLogging():
     formatter = logging.Formatter('%(levelname)s : %(asctime)s : %(message)s')
     fileHandler = logging.FileHandler('LogFile.log')
@@ -58,6 +59,7 @@ def startLogging():
     logger.addHandler(fileHandler)
 
 
+# create new csv file to track scheduled tasks
 def newCSV():
     try:
         fileExists = os.path.isfile(csvFileName)
@@ -68,11 +70,11 @@ def newCSV():
                 csvWriter.writerow(csvField)
             else:
                 pass
-
     except:
         logger.exception("Create CSV error.")
 
 
+# Create new task in csv
 def createCSV(rTaskName, rTaskPeriod, rTaskTime):
     try:
         with open(csvFileName, 'a+', newline='', encoding='utf-8') as csvFile:
@@ -83,6 +85,7 @@ def createCSV(rTaskName, rTaskPeriod, rTaskTime):
         logger.exception("Write CSV error.")
 
 
+# Update task in csv
 def updateCSV(rTaskName, rTaskTime):
     try:
         tempfile = NamedTemporaryFile('w+t', newline='', delete=False)
@@ -105,6 +108,7 @@ def updateCSV(rTaskName, rTaskTime):
         logger.exception("update CSV error.")
 
 
+# Delete task in csv
 def deleteCSV(rTaskName):
     try:
         tempfile = NamedTemporaryFile('w+t', newline='', delete=False)
@@ -124,7 +128,7 @@ def deleteCSV(rTaskName):
     except:
         logger.exception("update CSV error.")
 
-
+# cmd line to create task
 def createCmdLine():
     global cmdLineC
 
@@ -133,7 +137,7 @@ def createCmdLine():
 
     return cmdLineC
 
-
+# cmd line to update tassk
 def updateCmdLine():
     global cmdLineU
     cmdLineU = r'SCHTASKS /{taskType} /TN {taskName} /ST {taskTime}' \
@@ -141,7 +145,7 @@ def updateCmdLine():
 
     return cmdLineU
 
-
+# cmd line to delete task
 def deleteCmdLine():
     global cmdLineD
     cmdLineD = r'SCHTASKS /{taskType} /TN {taskName} /f' \
@@ -149,7 +153,7 @@ def deleteCmdLine():
 
     return cmdLineD
 
-
+# create task function
 def createTask():
     global cmdLineC
 
@@ -161,7 +165,7 @@ def createTask():
         print(e)
         logger.exception("Unable to create scheduled task")
 
-
+# update task function
 def updateTask():
     global cmdLineU
 
@@ -172,7 +176,7 @@ def updateTask():
         print(e)
         logger.exception("Unable to update scheduled task")
 
-
+# delete task function
 def deleteTask():
     global cmdLineD
 

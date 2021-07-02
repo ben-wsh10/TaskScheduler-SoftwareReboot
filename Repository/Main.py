@@ -2,7 +2,7 @@ import re
 import sys
 
 from PyQt5.QtCore import QTime
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 
 from UserInterface import Ui_MainWindow
 import UIController as UIC
@@ -257,6 +257,7 @@ class Main(QMainWindow, Ui_MainWindow):
         if self.tabWidget.currentIndex() == 0:
             UIC.createTask()
             UIC.createCSV(UIC.taskName, UIC.taskPeriod, UIC.taskTime)
+            QMessageBox.about(self, "Success", "Task created successfully!")
             UIC.logger.info(
                 "Task Created : " + str(UIC.taskName) + ", " + str(UIC.taskPeriod) + ", " + str(UIC.taskTime))
         elif self.tabWidget.currentIndex() == 1:
@@ -264,6 +265,7 @@ class Main(QMainWindow, Ui_MainWindow):
             UIC.updateCSV(UIC.taskName, UIC.taskTime)
             self.labelOldTime.setText(UIC.taskTime)
             self.realTimeUpdates()
+            QMessageBox.about(self, "Updates", "Task updated successfully!")
             UIC.logger.info(
                 "Task Updated : " + str(UIC.taskName) + ", " + str(UIC.taskPeriod) + ", " + str(UIC.taskTime))
         elif self.tabWidget.currentIndex() == 2:
@@ -273,6 +275,7 @@ class Main(QMainWindow, Ui_MainWindow):
             self.labelPeriod2.setText("-")
             self.labelTime.setText("00:00")
             self.realTimeUpdates()
+            QMessageBox.about(self, "Completed", "Task deleted successfully!")
             UIC.logger.info(
                 "Task Deleted : " + str(UIC.taskName) + ", " + str(UIC.taskPeriod) + ", " + str(UIC.taskTime))
 

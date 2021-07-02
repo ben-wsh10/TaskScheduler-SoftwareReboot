@@ -153,6 +153,16 @@ def deleteCmdLine():
 
     return cmdLineD
 
+
+# open on-screen keyboard
+# def openOnScreenKeyboard():
+#     try:
+#         # subprocess.call(['start', 'cmd', '/c', 'osk'], shell=True)
+#     except Exception as e:
+#         print(e)
+#         logger.exception("Unable to open on-screen keyboard")
+
+
 # create task function
 def createTask():
     global cmdLineC
@@ -164,6 +174,7 @@ def createTask():
     except Exception as e:
         print(e)
         logger.exception("Unable to create scheduled task")
+
 
 # update task function
 def updateTask():

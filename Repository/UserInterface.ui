@@ -891,6 +891,34 @@
                       <string>*No spaces allowed</string>
                      </property>
                     </widget>
+                    <widget class="QPushButton" name="keyboardButton">
+                     <property name="geometry">
+                      <rect>
+                       <x>233</x>
+                       <y>97</y>
+                       <width>93</width>
+                       <height>28</height>
+                      </rect>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <family>Times New Roman,Times,serif</family>
+                       <pointsize>-1</pointsize>
+                       <weight>50</weight>
+                       <bold>false</bold>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QPushButton{
+	font-family: &quot;Times New Roman&quot;, Times, serif;
+	font-size: 12px;
+	font-weight: normal;
+}</string>
+                     </property>
+                     <property name="text">
+                      <string>Keyboard</string>
+                     </property>
+                    </widget>
                    </widget>
                   </item>
                   <item>

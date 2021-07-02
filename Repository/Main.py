@@ -29,6 +29,9 @@ class Main(QMainWindow, Ui_MainWindow):
         self.cudButton.setText("Create")
         self.cudButton.setEnabled(False)
         self.cudButton.clicked.connect(lambda: self.triggerCUDBtn())
+        # Initialise on-screen keyboard
+        # self.keyboardButton.clicked.connect(lambda: UIC.openOnScreenKeyboard())
+        self.keyboardButton.setVisible(False)
         # Initialise start time
         self.timePeriod.setTime(QTime(0, 0))
         self.timePeriod2.setTime(QTime(0, 0))

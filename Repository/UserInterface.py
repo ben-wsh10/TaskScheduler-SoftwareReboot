@@ -349,6 +349,20 @@ class Ui_MainWindow(object):
 "\n"
 "}")
         self.label_2.setObjectName("label_2")
+        self.keyboardButton = QtWidgets.QPushButton(self.groupBox_3)
+        self.keyboardButton.setGeometry(QtCore.QRect(233, 97, 93, 28))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman,Times,serif")
+        font.setPointSize(-1)
+        font.setBold(False)
+        font.setWeight(50)
+        self.keyboardButton.setFont(font)
+        self.keyboardButton.setStyleSheet("QPushButton{\n"
+"    font-family: \"Times New Roman\", Times, serif;\n"
+"    font-size: 12px;\n"
+"    font-weight: normal;\n"
+"}")
+        self.keyboardButton.setObjectName("keyboardButton")
         self.horizontalLayout_5.addWidget(self.groupBox_3)
         spacerItem5 = QtWidgets.QSpacerItem(150, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_5.addItem(spacerItem5)
@@ -684,6 +698,7 @@ class Ui_MainWindow(object):
         self.groupBox_3.setTitle(_translate("MainWindow", "Task Name"))
         self.lineTaskName.setPlaceholderText(_translate("MainWindow", "Maximum 25 characters"))
         self.label_2.setText(_translate("MainWindow", "*No spaces allowed"))
+        self.keyboardButton.setText(_translate("MainWindow", "Keyboard"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Create"))
         self.groupBox_4.setTitle(_translate("MainWindow", "Task Name"))
         self.dropDownTaskName.setItemText(0, _translate("MainWindow", "-"))
